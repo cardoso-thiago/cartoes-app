@@ -4,16 +4,16 @@ import javax.validation.constraints.NotNull;
 
 public class AtivacaoCartaoDto {
     @NotNull(message = "O estado do cartão não pode ser nulo.")
-    private boolean ativo;
+    private Boolean ativo;
 
     public AtivacaoCartaoDto() {
     }
 
-    public AtivacaoCartaoDto(boolean ativo) {
+    public AtivacaoCartaoDto(Boolean ativo) {
         this.ativo = ativo;
     }
 
-    public boolean isAtivo() {
+    public Boolean isAtivo() {
         return ativo;
     }
 }
