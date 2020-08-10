@@ -3,6 +3,7 @@ package br.com.mastertech.cartoesapp.controller;
 import br.com.mastertech.cartoesapp.dto.AtivacaoCartaoDto;
 import br.com.mastertech.cartoesapp.dto.CartaoDto;
 import br.com.mastertech.cartoesapp.entity.Cartao;
+import br.com.mastertech.cartoesapp.exception.CartaoAlreadyExistsException;
 import br.com.mastertech.cartoesapp.exception.CartaoNotFoundException;
 import br.com.mastertech.cartoesapp.exception.ClienteNotFoundException;
 import br.com.mastertech.cartoesapp.mapper.DataMapper;
@@ -35,7 +36,7 @@ public class CartaoController {
     }
 
     @PostMapping
-    public ResponseEntity saveCartao(@RequestBody @Valid CartaoDto cartaoDto) throws ClienteNotFoundException {
+    public ResponseEntity saveCartao(@RequestBody @Valid CartaoDto cartaoDto) throws ClienteNotFoundException, CartaoAlreadyExistsException {
         Cartao cartao = DataMapper.INSTANCE.cartaoDtoToCartao(cartaoDto);
         CartaoDto savedCartao = DataMapper.INSTANCE.cartaoToCartaoDto(cartaoService.save(cartaoDto.getClienteId(), cartao));
         return ResponseEntity.created(URI.create("")).body(savedCartao);

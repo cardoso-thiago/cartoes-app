@@ -6,7 +6,6 @@ import br.com.mastertech.cartoesapp.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -20,16 +19,12 @@ public class ClienteService {
     }
 
     public List<Cliente> findAll() {
-        Iterable<Cliente> all = clienteRepository.findAll();
-        return StreamSupport.stream(all.spliterator(), false).collect(Collectors.toList());
+        return StreamSupport.stream(clienteRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public Cliente findById(Long clienteId) throws ClienteNotFoundException {
-        Optional<Cliente> cliente = clienteRepository.findById(clienteId);
-        if (!cliente.isPresent()) {
-            throw new ClienteNotFoundException("Cliente não encontrado");
-        }
-        return cliente.get();
+        return clienteRepository.findById(clienteId).orElseThrow(() -> new ClienteNotFoundException("Cliente não encontrado"));
     }
 
     public Cliente save(Cliente cliente) {

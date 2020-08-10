@@ -2,6 +2,7 @@ package br.com.mastertech.cartoesapp.service;
 
 import br.com.mastertech.cartoesapp.entity.Cartao;
 import br.com.mastertech.cartoesapp.entity.Cliente;
+import br.com.mastertech.cartoesapp.exception.CartaoAlreadyExistsException;
 import br.com.mastertech.cartoesapp.exception.CartaoNotFoundException;
 import br.com.mastertech.cartoesapp.exception.ClienteNotFoundException;
 import br.com.mastertech.cartoesapp.repository.CartaoRepository;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -29,12 +29,13 @@ public class CartaoService {
         return StreamSupport.stream(all.spliterator(), false).collect(Collectors.toList());
     }
 
-    public Cartao save(Long clienteId, Cartao cartao) throws ClienteNotFoundException {
-        Optional<Cliente> clientById = clienteRepository.findById(clienteId);
-        if (!clientById.isPresent()) {
-            throw new ClienteNotFoundException("O cliente informado não foi encontrado");
+    public Cartao save(Long clienteId, Cartao cartao) throws ClienteNotFoundException, CartaoAlreadyExistsException {
+        if(cartaoRepository.findByNumero(cartao.getNumero()).isPresent()){
+            throw new CartaoAlreadyExistsException(MessageFormat.format("O cartão {0} já foi cadastrado.", cartao.getNumero()));
         }
-        cartao.setCliente(clientById.get());
+        Cliente cliente = clienteRepository.findById(clienteId).orElseThrow(() ->
+                new ClienteNotFoundException("O cliente informado não foi encontrado"));
+        cartao.setCliente(cliente);
         return cartaoRepository.save(cartao);
     }
 
@@ -49,10 +50,7 @@ public class CartaoService {
     }
 
     private Cartao getCartaoByNumeroImpl(String numeroCartao) throws CartaoNotFoundException {
-        Optional<Cartao> cartaoByNumero = cartaoRepository.findByNumero(numeroCartao);
-        if (!cartaoByNumero.isPresent()) {
-            throw new CartaoNotFoundException(MessageFormat.format("O cartão com o número {0} não foi encontrado.", numeroCartao));
-        }
-        return cartaoByNumero.get();
+        return cartaoRepository.findByNumero(numeroCartao).orElseThrow(() ->
+                new CartaoNotFoundException(MessageFormat.format("O cartão com o número {0} não foi encontrado.", numeroCartao)));
     }
 }
