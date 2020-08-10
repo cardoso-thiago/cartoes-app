@@ -13,8 +13,10 @@ public class PagamentoDto {
     @NotNull(message = "A descrição do pagamento não pode ser nula.")
     @NotEmpty(message = "A descrição do pagamento não pode ser vazia.")
     private String descricao;
+    @NotNull(message = "O valor da transação não pode ser nulo.")
     @DecimalMin(value = "0.01", message = "O valor da transação deve ser um número positivo.")
     private double valor;
+    @NotNull(message = "O id do cartão não pode ser nulo.")
     @Min(value = 1, message = "O id do cartão deve ser um número positivo.")
     @JsonProperty("cartao_id")
     private Long cartaoId;

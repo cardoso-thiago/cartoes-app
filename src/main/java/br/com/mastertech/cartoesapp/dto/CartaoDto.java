@@ -11,6 +11,7 @@ public class CartaoDto {
     @NotNull(message = "O numero do cartao não pode ser nulo.")
     @NotEmpty(message = "O numero do cartao não pode ser vazio.")
     private String numero;
+    @NotNull(message = "O id do cliente não pode ser nulo.")
     @Min(value = 1, message = "O id do cliente deve ser um número positivo.")
     private Long clienteId;
     private boolean ativo;

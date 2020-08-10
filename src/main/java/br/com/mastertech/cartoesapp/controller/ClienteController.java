@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity getCliente(@Valid
+                                     @NotNull(message = "O id do cliente não pode ser nulo.")
                                      @Min(value = 1, message = "O id do cliente deve ser um número positivo.")
                                      @PathVariable("id") Long clienteId) throws ClienteNotFoundException {
         ClienteDto clienteDto = DataMapper.INSTANCE.clienteToClienteDto(clienteService.findById(clienteId));

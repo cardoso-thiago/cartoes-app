@@ -8,7 +8,6 @@ import br.com.mastertech.cartoesapp.repository.PagamentoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PagamentoService {
@@ -26,17 +25,12 @@ public class PagamentoService {
         return pagamentoRepository.save(pagamento);
     }
 
-
     public List<Pagamento> getPagamentosPorCartao(Long cartaoId) throws CartaoNotFoundException {
         Cartao cartao = getCartaoImpl(cartaoId);
         return pagamentoRepository.findAllByCartao(cartao);
     }
 
     private Cartao getCartaoImpl(Long cartaoId) throws CartaoNotFoundException {
-        Optional<Cartao> cartao = cartaoRepository.findById(cartaoId);
-        if (!cartao.isPresent()) {
-            throw new CartaoNotFoundException("O cartão informado não foi encontrado.");
-        }
-        return cartao.get();
+        return cartaoRepository.findById(cartaoId).orElseThrow(() -> new CartaoNotFoundException("O cartão informado não foi encontrado."));
     }
 }
