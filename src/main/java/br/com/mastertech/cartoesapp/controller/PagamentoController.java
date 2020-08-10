@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.net.URI;
 import java.util.List;
 
@@ -23,14 +25,17 @@ public class PagamentoController {
     }
 
     @PostMapping("/pagamento")
-    public ResponseEntity saveCartao(@RequestBody @Validated PagamentoDto pagamentoDto) throws CartaoNotFoundException {
+    public ResponseEntity saveCartao(@RequestBody @Valid PagamentoDto pagamentoDto) throws CartaoNotFoundException {
         Pagamento pagamento = DataMapper.INSTANCE.pagamentoDtoToPagamento(pagamentoDto);
         Pagamento savedPagamento = pagamentoService.save(pagamentoDto.getCartaoId(), pagamento);
         return ResponseEntity.created(URI.create("")).body(DataMapper.INSTANCE.pagamentoToPagamentoDto(savedPagamento));
     }
 
     @GetMapping("/pagamentos/{id_cartao}")
-    public ResponseEntity getPagamentos(@PathVariable("id_cartao") Long cartaoId) throws CartaoNotFoundException {
+    public ResponseEntity getPagamentos(
+            @Valid
+            @Min(value = 1, message = "O id do cartão deve ser um número positivo.")
+            @PathVariable("id_cartao") Long cartaoId) throws CartaoNotFoundException {
         List<Pagamento> pagamentosPorCartao = pagamentoService.getPagamentosPorCartao(cartaoId);
         return ResponseEntity.created(URI.create("")).body(DataMapper.INSTANCE.pagamentoToPagamentoDto(pagamentosPorCartao));
     }

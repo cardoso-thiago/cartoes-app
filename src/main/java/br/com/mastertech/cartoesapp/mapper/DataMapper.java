@@ -1,6 +1,7 @@
 package br.com.mastertech.cartoesapp.mapper;
 
 import br.com.mastertech.cartoesapp.dto.CartaoDto;
+import br.com.mastertech.cartoesapp.dto.CartaoSemEstadoDto;
 import br.com.mastertech.cartoesapp.dto.ClienteDto;
 import br.com.mastertech.cartoesapp.dto.PagamentoDto;
 import br.com.mastertech.cartoesapp.entity.Cartao;
@@ -23,6 +24,8 @@ public interface DataMapper {
     Cartao cartaoDtoToCartao(CartaoDto cartaoDto);
     @Mapping(target = "clienteId", source = "cliente.id")
     CartaoDto cartaoToCartaoDto(Cartao cartao);
+    @Mapping(target = "clienteId", source = "cliente.id")
+    CartaoSemEstadoDto cartaoToCartaoSemEstadoDto(Cartao cartao);
     List<CartaoDto> cartaoToCartaoDto(List<Cartao> cartao);
 
     Pagamento pagamentoDtoToPagamento(PagamentoDto pagamentoDto);

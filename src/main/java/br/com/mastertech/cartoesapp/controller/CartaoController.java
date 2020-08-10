@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
 
@@ -32,21 +35,29 @@ public class CartaoController {
     }
 
     @PostMapping
-    public ResponseEntity saveCartao(@RequestBody @Validated CartaoDto cartaoDto) throws ClienteNotFoundException {
+    public ResponseEntity saveCartao(@RequestBody @Valid CartaoDto cartaoDto) throws ClienteNotFoundException {
         Cartao cartao = DataMapper.INSTANCE.cartaoDtoToCartao(cartaoDto);
         CartaoDto savedCartao = DataMapper.INSTANCE.cartaoToCartaoDto(cartaoService.save(cartaoDto.getClienteId(), cartao));
         return ResponseEntity.created(URI.create("")).body(savedCartao);
     }
 
     @PatchMapping("/{numero}")
-    public ResponseEntity ativaCartao(@PathVariable("numero") String numeroCartao, @RequestBody AtivacaoCartaoDto ativacaoCartaoDto) throws CartaoNotFoundException {
+    public ResponseEntity ativaCartao(
+            @Valid
+            @NotNull(message = "O numero do cartão deve ser informado.")
+            @NotEmpty(message = "O numero do cartão deve ser informado.")
+            @PathVariable("numero") String numeroCartao, @RequestBody @Valid AtivacaoCartaoDto ativacaoCartaoDto) throws CartaoNotFoundException {
         Cartao patchedCartao = cartaoService.ativacaoCartao(numeroCartao, ativacaoCartaoDto.isAtivo());
         return ResponseEntity.ok().body(DataMapper.INSTANCE.cartaoToCartaoDto(patchedCartao));
     }
 
     @GetMapping("/{numero}")
-    public ResponseEntity getCartao(@PathVariable("numero") String numeroCartao) throws CartaoNotFoundException {
+    public ResponseEntity getCartao(
+            @Valid
+            @NotNull(message = "O numero do cartão deve ser informado.")
+            @NotEmpty(message = "O numero do cartão deve ser informado.")
+            @PathVariable("numero") String numeroCartao) throws CartaoNotFoundException {
         Cartao cartao = cartaoService.findByNumero(numeroCartao);
-        return ResponseEntity.ok().body(DataMapper.INSTANCE.cartaoToCartaoDto(cartao));
+        return ResponseEntity.ok().body(DataMapper.INSTANCE.cartaoToCartaoSemEstadoDto(cartao));
     }
 }
