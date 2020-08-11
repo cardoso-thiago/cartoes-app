@@ -1,10 +1,10 @@
 package br.com.mastertech.cartoesapp.mapper;
 
 import br.com.mastertech.cartoesapp.dto.*;
-import br.com.mastertech.cartoesapp.entity.Cartao;
-import br.com.mastertech.cartoesapp.entity.Cliente;
-import br.com.mastertech.cartoesapp.entity.Fatura;
-import br.com.mastertech.cartoesapp.entity.Pagamento;
+import br.com.mastertech.cartoesapp.entity.Card;
+import br.com.mastertech.cartoesapp.entity.Customer;
+import br.com.mastertech.cartoesapp.entity.Invoice;
+import br.com.mastertech.cartoesapp.entity.Payment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -15,21 +15,21 @@ import java.util.List;
 public interface DataMapper {
     DataMapper INSTANCE = Mappers.getMapper(DataMapper.class);
 
-    Cliente clienteDtoToCliente(ClienteDto clienteDto);
-    ClienteDto clienteToClienteDto(Cliente cliente);
-    List<ClienteDto> clienteToClienteDto(List<Cliente> cliente);
+    Customer customerRequestToCustomer(CustomerRequest customerRequest);
+    CustomerRequest customerToCustomerRequest(Customer customer);
+    List<CustomerRequest> customerToCustomerRequest(List<Customer> customer);
 
-    Cartao cartaoDtoToCartao(CartaoDto cartaoDto);
-    @Mapping(target = "clienteId", source = "cliente.id")
-    CartaoDto cartaoToCartaoDto(Cartao cartao);
-    @Mapping(target = "clienteId", source = "cliente.id")
-    CartaoSemEstadoDto cartaoToCartaoSemEstadoDto(Cartao cartao);
-    List<CartaoDto> cartaoToCartaoDto(List<Cartao> cartao);
+    Card cardRequestToCard(CardRequest cardRequest);
+    @Mapping(target = "customerId", source = "customer.id")
+    CardRequest cardToCardRequest(Card card);
+    @Mapping(target = "customerId", source = "customer.id")
+    CardResponse cardToCardResponse(Card card);
+    List<CardRequest> cardToCardRequest(List<Card> card);
 
-    Pagamento pagamentoDtoToPagamento(PagamentoDto pagamentoDto);
-    @Mapping(target = "cartaoId", source = "cartao.id")
-    PagamentoDto pagamentoToPagamentoDto(Pagamento pagamento);
-    List<PagamentoDto> pagamentoToPagamentoDto(List<Pagamento> pagamento);
+    Payment paymentRequestToPayment(PaymentRequest paymentRequest);
+    @Mapping(target = "cardId", source = "card.id")
+    PaymentRequest paymentToPaymentRequest(Payment payment);
+    List<PaymentRequest> paymentToPaymentRequest(List<Payment> payment);
 
-    FaturaDto faturaToFaturaDto(Fatura fatura);
+    InvoiceRequest invoiceToInvoiceRequest(Invoice invoice);
 }
