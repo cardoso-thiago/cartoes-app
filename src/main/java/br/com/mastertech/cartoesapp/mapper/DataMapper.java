@@ -1,11 +1,9 @@
 package br.com.mastertech.cartoesapp.mapper;
 
-import br.com.mastertech.cartoesapp.dto.CartaoDto;
-import br.com.mastertech.cartoesapp.dto.CartaoSemEstadoDto;
-import br.com.mastertech.cartoesapp.dto.ClienteDto;
-import br.com.mastertech.cartoesapp.dto.PagamentoDto;
+import br.com.mastertech.cartoesapp.dto.*;
 import br.com.mastertech.cartoesapp.entity.Cartao;
 import br.com.mastertech.cartoesapp.entity.Cliente;
+import br.com.mastertech.cartoesapp.entity.Fatura;
 import br.com.mastertech.cartoesapp.entity.Pagamento;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -32,4 +30,6 @@ public interface DataMapper {
     @Mapping(target = "cartaoId", source = "cartao.id")
     PagamentoDto pagamentoToPagamentoDto(Pagamento pagamento);
     List<PagamentoDto> pagamentoToPagamentoDto(List<Pagamento> pagamento);
+
+    FaturaDto faturaToFaturaDto(Fatura fatura);
 }
