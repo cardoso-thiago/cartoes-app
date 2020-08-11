@@ -1,49 +1,49 @@
-DROP TABLE IF EXISTS cliente CASCADE;
+DROP TABLE IF EXISTS customer CASCADE;
 
-CREATE TABLE cliente (
+CREATE TABLE customer (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(150) NOT NULL
+    name VARCHAR(150) NOT NULL
 );
 
-INSERT INTO cliente (nome) VALUES
+INSERT INTO customer (name) VALUES
 ('Nicollas Gabriel'),
 ('Thiago Cardoso');
 
-DROP TABLE IF EXISTS cartao CASCADE;
+DROP TABLE IF EXISTS card CASCADE;
 
-CREATE TABLE cartao (
+CREATE TABLE card (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    numero VARCHAR(12) NOT NULL UNIQUE,
-    ativo BOOL NOT NULL DEFAULT FALSE,
-    expirado BOOL NOT NULL DEFAULT FALSE,
-    cliente_id INT NOT NULL,
-    foreign key (cliente_id) references cliente(id)
+    number VARCHAR(12) NOT NULL UNIQUE,
+    active BOOL NOT NULL DEFAULT FALSE,
+    expired BOOL NOT NULL DEFAULT FALSE,
+    customer_id INT NOT NULL,
+    foreign key (customer_id) references customer(id)
 );
 
-INSERT INTO cartao (numero, cliente_id) VALUES
+INSERT INTO card (number, customer_id) VALUES
 ('123456789', 1),
 ('987654321', 2);
 
-DROP TABLE IF EXISTS fatura;
+DROP TABLE IF EXISTS invoice;
 
-CREATE TABLE fatura (
+CREATE TABLE invoice (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    valor_pago DOUBLE NOT NULL,
-    pago_em DATE NOT NULL,
-    cartao_id INT NOT NULL,
-    foreign key (cartao_id) references cartao(id)
+    payed_value DOUBLE NOT NULL,
+    payed_in DATE NOT NULL,
+    card_id INT NOT NULL,
+    foreign key (card_id) references card(id)
 );
 
-DROP TABLE IF EXISTS pagamento;
+DROP TABLE IF EXISTS payment;
 
-CREATE TABLE pagamento (
+CREATE TABLE payment (
      id INT AUTO_INCREMENT PRIMARY KEY,
-     descricao VARCHAR(100) NOT NULL,
-     valor DOUBLE NOT NULL,
-     cartao_id INT NOT NULL,
-     foreign key (cartao_id) references cartao(id)
+     description VARCHAR(100) NOT NULL,
+     value DOUBLE NOT NULL,
+     card_id INT NOT NULL,
+     foreign key (card_id) references card(id)
 );
 
-INSERT INTO pagamento (descricao, valor, cartao_id) VALUES
+INSERT INTO payment (description, value, card_id) VALUES
 ('Compra de Cerveja', 300.56, 1),
 ('Compra de Café', 73.89, 2);

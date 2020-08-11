@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class RestExceptionHandler {
-    @ExceptionHandler(value = {SistemaCartoesException.class})
-    protected ResponseEntity<Object> handleSistemaCartoesException(SistemaCartoesException e) {
+    @ExceptionHandler(value = {CardSystemException.class})
+    protected ResponseEntity<Object> handleSistemaCartoesException(CardSystemException e) {
         return ResponseEntity.status(e.getHttpStatus()).body(createErrorBody(e.getMessage()));
     }
 
