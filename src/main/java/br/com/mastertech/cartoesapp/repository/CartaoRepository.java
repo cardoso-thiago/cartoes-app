@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface CartaoRepository extends CrudRepository<Cartao, Long> {
     Optional<Cartao> findByNumero(String numeroCartao);
+
+    Optional<Cartao> findByIdAndClienteId(Long cartaoId, Long clienteId);
 }

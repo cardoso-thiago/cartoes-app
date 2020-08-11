@@ -2,6 +2,8 @@ package br.com.mastertech.cartoesapp.controller;
 
 import br.com.mastertech.cartoesapp.dto.PagamentoDto;
 import br.com.mastertech.cartoesapp.entity.Pagamento;
+import br.com.mastertech.cartoesapp.exception.CartaoDesativadoException;
+import br.com.mastertech.cartoesapp.exception.CartaoExpiradoException;
 import br.com.mastertech.cartoesapp.exception.CartaoNotFoundException;
 import br.com.mastertech.cartoesapp.mapper.DataMapper;
 import br.com.mastertech.cartoesapp.service.PagamentoService;
@@ -26,7 +28,7 @@ public class PagamentoController {
     }
 
     @PostMapping("/pagamento")
-    public ResponseEntity saveCartao(@RequestBody @Valid PagamentoDto pagamentoDto) throws CartaoNotFoundException {
+    public ResponseEntity savePagamento(@RequestBody @Valid PagamentoDto pagamentoDto) throws CartaoNotFoundException, CartaoExpiradoException, CartaoDesativadoException {
         Pagamento pagamento = DataMapper.INSTANCE.pagamentoDtoToPagamento(pagamentoDto);
         Pagamento savedPagamento = pagamentoService.save(pagamentoDto.getCartaoId(), pagamento);
         return ResponseEntity.created(URI.create("")).body(DataMapper.INSTANCE.pagamentoToPagamentoDto(savedPagamento));

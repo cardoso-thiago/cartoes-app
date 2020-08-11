@@ -16,20 +16,26 @@ public class Cartao {
     private String numero;
     @Column(name = "ativo")
     private boolean ativo = Boolean.FALSE;
+    @Column(name = "expirado")
+    private boolean expirado = Boolean.FALSE;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
-    @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Pagamento> pagamentos = new ArrayList<>();
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Fatura> faturas = new ArrayList<>();
 
     public Cartao() {
     }
 
-    public Cartao(String numero, boolean ativo, Cliente cliente, List<Pagamento> pagamentos) {
+    public Cartao(String numero, boolean ativo, boolean expirado, Cliente cliente, List<Pagamento> pagamentos, List<Fatura> faturas) {
         this.numero = numero;
         this.ativo = ativo;
+        this.expirado = expirado;
         this.cliente = cliente;
         this.pagamentos = pagamentos;
+        this.faturas = faturas;
     }
 
     public static CartaoBuilder builder() {
@@ -48,6 +54,10 @@ public class Cartao {
         return ativo;
     }
 
+    public boolean isExpirado() {
+        return expirado;
+    }
+
     public Cliente getCliente() {
         return cliente;
     }
@@ -62,5 +72,13 @@ public class Cartao {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public void setExpirado(boolean expirado) {
+        this.expirado = expirado;
+    }
+
+    public List<Fatura> getFaturas() {
+        return faturas;
     }
 }
